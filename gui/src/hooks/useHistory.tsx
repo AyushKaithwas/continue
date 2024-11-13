@@ -48,12 +48,16 @@ function useHistory(dispatch: Dispatch) {
     return result.status === "success" ? result.content : undefined;
   }
 
-  async function saveSession() {
+  async function saveSession(options: { resetSession?: boolean } = {}) {
+    const { resetSession = true } = options;
     if (state.history.length === 0) return;
 
     const stateCopy = { ...state };
-    dispatch(newSession());
-    await new Promise((resolve) => setTimeout(resolve, 10));
+
+    if (resetSession) {
+      dispatch(newSession());
+      await new Promise((resolve) => setTimeout(resolve, 10));
+    }
 
     if (
       state.config?.experimental?.getChatTitles &&

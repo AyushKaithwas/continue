@@ -324,6 +324,15 @@ export function Chat() {
     [state.history],
   );
 
+  useEffect(() => {
+    if (!active && state.history.length > 0) {
+      const lastMessage = state.history[state.history.length - 1];
+      if (lastMessage?.message.role === "assistant") {
+        saveSession({ resetSession: false });
+      }
+    }
+  }, [active, state.history, saveSession]);
+
   return (
     <>
       <TopGuiDiv
